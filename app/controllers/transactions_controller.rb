@@ -3,11 +3,6 @@ class TransactionsController < ApplicationController
 
   # GET /transactions or /transactions.json
   def index
-    # @client = IEX::Api::Client.new(
-    #   publishable_token: 'pk_52521856dee54a2d8d998028f0ace4e0',
-    #   secret_token: 'sk_6ce8a46036b0455b97a811239d50c7ad',
-    #   endpoint: 'https://cloud.iexapis.com/v1'
-    # )
     @transactions = Transaction.all
   end
 
