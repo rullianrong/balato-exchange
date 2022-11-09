@@ -1,18 +1,27 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
+  before_action :set_client, only: %i[ quote ]
 
   # GET /transactions or /transactions.json
   def index
     @transactions = Transaction.all
   end
 
+  def search
+  end
+
   # GET /transactions/1 or /transactions/1.json
   def show
   end
 
+  # fetch the data of the symbol provided
+  def quote
+    @quote = @client.quote(params[:symbol])
+  end
+
   # GET /transactions/new
   def new
-    @transaction = Transaction.new
+    @transaction = current_user.transactions.build
   end
 
   # GET /transactions/1/edit
@@ -58,9 +67,12 @@ class TransactionsController < ApplicationController
   end
 
   private
+    def set_client
+      @client = IEX::Api::Client.new
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_transaction
-      @transaction = Transaction.find(params[:id])
+      @transaction = current_user.transactions.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
