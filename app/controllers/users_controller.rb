@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
+  # GET current_users assets
+  def dashboard
+    @assets = current_user.transactions
+  end
+
   # GET /users or /users.json
   def index
     @users = User.all
@@ -65,6 +70,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:email)
+      params.require(:user).permit(:id)
     end
 end
