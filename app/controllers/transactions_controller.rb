@@ -1,27 +1,42 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
-  before_action :set_client, only: %i[ quote ]
+  before_action :set_client, only: %i[ index new ]
 
-  # GET /transactions or /transactions.json
+  # GET /transactions
   def index
-    @transactions = Transaction.all
+    @transactions = current_user.transactions      
   end
 
   def search
   end
 
-  # GET /transactions/1 or /transactions/1.json
+  # GET /transactions/1 
   def show
-  end
-
-  # fetch the data of the symbol provided
-  def quote
-    @quote = @client.quote(params[:symbol])
   end
 
   # GET /transactions/new
   def new
-    @transaction = current_user.transactions.build
+    if current_user.transactions.exists?(symbol: params[:symbol].upcase)
+      @transaction = current_user.transactions.find_by(symbol: params[:symbol].upcase)
+      @quote = @client.quote(params[:symbol])
+      @company_name = @transaction.stock_name
+      @symbol = @transaction.symbol
+      @price = @quote.latest_price
+      @shares = @transaction.shares
+    else
+      @transaction = current_user.transactions.build
+
+      begin
+        @quote = @client.quote(params[:symbol])
+        @company_name = @quote.company_name
+        @symbol = @quote.symbol
+        @price = @quote.latest_price
+      rescue IEX::Errors::SymbolNotFoundError
+        # handle not found error
+        redirect_to :search, alert: "Symbol not found"
+      end
+      
+    end
   end
 
   # GET /transactions/1/edit
@@ -30,30 +45,32 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
-    @transaction = Transaction.new(transaction_params)
+    @transaction = current_user.transactions.build(transaction_params)
 
-    respond_to do |format|
-      if @transaction.save
-        format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully created." }
-        format.json { render :show, status: :created, location: @transaction }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
-      end
+    if @transaction.save
+      redirect_to :authenticated_root, notice: 'Stocks successfully added'  
     end
   end
 
   # PATCH/PUT /transactions/1 or /transactions/1.json
   def update
-    respond_to do |format|
-      if @transaction.update(transaction_params)
-        format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully updated." }
-        format.json { render :show, status: :ok, location: @transaction }
+    @stock = current_user.transactions.find_by(symbol: params[:transaction][:symbol])
+    if params[:sell]
+      if params[:transaction][:added_shares].to_i > @stock.shares
+        redirect_to "/transactions/new?symbol=#{params[:transaction][:symbol]}&commit=Search", alert: 'Insufficient shares'
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
+        @stock.update_attribute(:shares, @stock.shares - params[:transaction][:added_shares].to_i)
+        if @transaction.update(transaction_params)
+          redirect_to :authenticated_root, notice: 'Stocks successfully added'
+        end
+      end
+    else 
+      @stock.update_attribute(:shares, @stock.shares + params[:transaction][:added_shares].to_i)
+      if @transaction.update(transaction_params)
+        redirect_to :authenticated_root, notice: 'Stocks successfully added'
       end
     end
+
   end
 
   # DELETE /transactions/1 or /transactions/1.json
@@ -77,6 +94,6 @@ class TransactionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def transaction_params
-      params.require(:transaction).permit(:symbol, :stock_name, :shares, :transaction_type, :price, :value, :user_id)
+      params.require(:transaction).permit(:symbol, :stock_name, :shares, :user_id)
     end
 end
