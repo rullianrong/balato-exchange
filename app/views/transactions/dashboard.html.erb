@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Dashboard</h1>
+
+<%= link_to 'Buy stocks', search_path %>
+<%= link_to 'Transactions', transactions_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Stock name</th>
+      <th>Shares</th>
+      <th>Price</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @portfolio.each do |asset| %>
+      <tr>
+        <td><%= asset[:stock][:symbol] %></td>
+        <td><%= asset[:stock][:stock_name] %></td>
+        <td><%= asset[:shares] %></td>
+        <td><%= number_to_currency(@client.quote(asset[:stock][:symbol]).latest_price) %></td>
+        <td><%= number_to_currency(@client.quote(asset[:stock][:symbol]).latest_price * asset[:shares]) %></td>
+        <td><%= link_to 'Add/Sell stock', "/transactions/new?symbol=#{asset[:stock][:symbol]}&commit=Search" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<br>
+

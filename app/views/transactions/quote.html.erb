@@ -1,1 +1,41 @@
-<p><%= @quote.latest_price %></p>
+<%= link_to 'Search', search_path %>
+
+<h1><%= @comapany_name %> (<%= @symbol %>)</h1>
+
+<%= form_with(model: transaction) do |form| %>
+  <% if transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+        <% transaction.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <table>
+    <tr>
+        <td><%= form.label :symbol %></td>
+        <td><%= @symbol %></td>
+    </tr>
+    <tr>
+        <td>Company Name</td>
+        <td><%= @comapany_name %></td>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td><%= @price %></td>
+    </tr>
+  </table>
+
+  <div class="field">
+    <%= form.label :symbol %>
+    <%= form.text_field :symbol %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Search' %>
+  </div>
+<% end %>

@@ -1,4 +1,52 @@
-<h1>Buy/Sell Stocks</h1>
+<p id="alert"><%= alert %></p>
+<%= link_to 'Search', search_path %>
 
-<%= render 'form', transaction: @transaction %>
+<h1><%= @company_name %> (<%= @symbol %>)</h1>
 
+<%= form_with(model: @transaction) do |form| %>
+  <% if @transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+        <% @transaction.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <table>
+    <tr>
+        <td><%= form.label :symbol %></td>
+        <td><%= form.text_field :symbol, value: @symbol, :readonly => true  %></td>
+    </tr>
+    <tr>
+        <td><%= form.label :company_name %></td>
+        <td><%= form.text_field :stock_name, value: @company_name, :readonly => true  %>
+    </tr>
+    <tr>
+        <td>Price</td>
+        <td><%= @price %></td>
+    </tr>
+  </table>
+
+  <div class="field">
+    <% if @shares %>
+      <p>You currently own <%= @shares %> shares of <%= @company_name %></p>
+      <%= form.label :shares, 'Enter number of shares' %>
+      <%= form.text_field :shares %>
+      <div class="actions">
+        <%= form.submit 'Buy' %>
+        <%= form.submit 'Sell', name: 'sell' %>
+      </div>
+    <% else %>
+      <%= form.label :shares, 'Enter number of shares' %>
+      <%= form.text_field :shares %>
+      <div class="actions">
+        <%= form.submit 'Buy' %>
+      </div>
+    <% end %>
+  </div>
+
+<% end %>

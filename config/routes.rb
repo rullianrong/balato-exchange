@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # redirection for authentication
   devise_scope :user do
     authenticated :user do
-      root 'users#dashboard', as: :authenticated_root
+      root 'transactions#dashboard', as: :authenticated_root
     end
 
     unauthenticated do
@@ -14,6 +14,5 @@ Rails.application.routes.draw do
 
   resources :transactions
   get '/search', to: 'transactions#search', as: 'search'
-  get '/quote', to: 'transactions#quote', as: 'quote'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

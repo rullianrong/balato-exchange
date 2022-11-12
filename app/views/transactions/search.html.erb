@@ -1,4 +1,12 @@
-<%= form_with url: quote_path, method: :get do |form| %>
+<% flash.each do |type, msg| %>
+  <div class="alert alert-info">
+    <%= msg %>
+  </div>
+<% end %>
+
+<%= link_to 'Dashboard', authenticated_root_path %>
+
+<%= form_with url: new_transaction_path, method: :get do |form| %>
   <div class="field">
     <%= form.label :symbol %>
     <%= form.text_field :symbol %>
