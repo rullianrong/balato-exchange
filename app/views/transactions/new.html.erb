@@ -28,7 +28,6 @@
     <tr>
         <td>Price</td>
         <td><%= @price %></td>
-        
     </tr>
   </table>
 
@@ -36,7 +35,7 @@
     <% if @shares %>
       <p>You currently own <%= @shares %> shares of <%= @company_name %></p>
       <%= form.label :shares, 'Enter number of shares' %>
-      <%= form.text_field :added_shares %>
+      <%= form.text_field :shares %>
       <div class="actions">
         <%= form.submit 'Buy' %>
         <%= form.submit 'Sell', name: 'sell' %>

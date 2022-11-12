@@ -1,10 +1,25 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
-  before_action :set_client, only: %i[ index new ]
+  before_action :set_client, only: %i[ dashboard new create ]
 
-  # GET /transactions
+# GET /transactio
   def index
-    @transactions = current_user.transactions      
+    @transactions = current_user.transactions.order(created_at: :desc)
+  end
+
+  def dashboard
+    @transactions = current_user.transactions
+    stock_symbols = @transactions.pluck(:symbol).uniq
+    @portfolio = Array.new
+
+    stock_symbols.each do |symbol|
+      @portfolio << {
+        stock: @transactions.find_by(symbol: symbol),
+        shares: @transactions.where(symbol: symbol).where(transaction_type: 'buy').sum(:shares) - @transactions.where(symbol: symbol).where(transaction_type: 'sell').sum(:shares)
+        # amount_bought: transactions.where(symbol: symbol).where(transaction_type: 'buy').sum(:amount), 
+        # amount_sold: transactions.where(symbol: symbol).where(transaction_type: 'sell').sum(:amount)
+      }
+    end
   end
 
   def search
@@ -16,27 +31,19 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/new
   def new
-    if current_user.transactions.exists?(symbol: params[:symbol].upcase)
-      @transaction = current_user.transactions.find_by(symbol: params[:symbol].upcase)
-      @quote = @client.quote(params[:symbol])
-      @company_name = @transaction.stock_name
-      @symbol = @transaction.symbol
-      @price = @quote.latest_price
-      @shares = @transaction.shares
-    else
       @transaction = current_user.transactions.build
+      @shares = current_user.transactions.where(symbol: params[:symbol].upcase).sum(:shares)
 
       begin
-        @quote = @client.quote(params[:symbol])
-        @company_name = @quote.company_name
-        @symbol = @quote.symbol
-        @price = @quote.latest_price
+        quote = @client.quote(params[:symbol])
+        @company_name = quote.company_name
+        @symbol = quote.symbol
+        @price = quote.latest_price
       rescue IEX::Errors::SymbolNotFoundError
         # handle not found error
         redirect_to :search, alert: "Symbol not found"
       end
-      
-    end
+
   end
 
   # GET /transactions/1/edit
@@ -45,6 +52,14 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
+    if params[:sell]
+      params[:transaction][:transaction_type] = 'sell'
+    else
+      params[:transaction][:transaction_type] = 'buy'
+    end
+
+    params[:transaction][:amount] = params[:transaction][:shares].to_f * @client.quote(params[:transaction][:symbol]).latest_price
+
     @transaction = current_user.transactions.build(transaction_params)
 
     if @transaction.save
@@ -94,6 +109,6 @@ class TransactionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def transaction_params
-      params.require(:transaction).permit(:symbol, :stock_name, :shares, :user_id)
+      params.require(:transaction).permit(:symbol, :stock_name, :shares, :transaction_type, :amount, :user_id)
     end
 end
