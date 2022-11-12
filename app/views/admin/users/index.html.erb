@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Admin Access</h1>
+<h2>Users</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td>Email: <%= user.email %></td>
+        <td>Admin: <%= user.admin %></td>
+        <td>Confirmed: ADD SOMETHING FOR THIS</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Add User', new_admin_user_path %>
