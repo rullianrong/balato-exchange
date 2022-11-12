@@ -8,6 +8,9 @@ class TransactionsController < ApplicationController
     #   secret_token: 'sk_6ce8a46036b0455b97a811239d50c7ad',
     #   endpoint: 'https://cloud.iexapis.com/v1'
     # )
+    if current_user.admin?
+      redirect_to '/admin/users'
+    end
     @transactions = Transaction.all
   end
 
