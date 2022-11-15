@@ -70,7 +70,7 @@ class Admin::UsersController < ApplicationController
     end
 
     def check_if_admin
-        redirect_to transactions_path unless current_user.admin?
+        redirect_to authenticated_root_path unless current_user.admin?
     end
 
 
