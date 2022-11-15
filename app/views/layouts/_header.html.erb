@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar">
+  <div class="container-fluid">
+    <%# For showing admin / trader upon login %>
+    <% if current_user && current_user.admin %>
+        <span>Admin</span>
+    <% elsif current_user && !current_user.admin %>
+        <span>Trader</span>
+    <% end %>
+
+    <div class="collapse navbar-collapse navbar-content-container" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-content-right">
+        <% if user_signed_in? %>
+            <li class="nav-item">
+                <%= link_to current_user.email, edit_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+                <%= link_to 'Log out', destroy_user_session_path, method: :delete, class: "nav-link" %>
+            </li>
+        <% else %>
+            <li class="nav-item">
+                <%= link_to 'Sign up', new_user_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+                <%= link_to 'Log in', new_user_session_path, class: "nav-link" %>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

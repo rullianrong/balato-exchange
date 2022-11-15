@@ -140,6 +140,10 @@ GEM
       i18n (>= 0.6.4, <= 2)
     msgpack (1.6.0)
     multipart-post (2.2.3)
+    net-protocol (0.1.3)
+      timeout
+    net-smtp (0.3.3)
+      net-protocol
     nio4r (2.5.8)
     nokogiri (1.13.9-x86_64-linux)
       racc (~> 1.4)
@@ -215,6 +219,7 @@ GEM
       sprockets (>= 3.0.0)
     thor (1.2.1)
     tilt (2.0.11)
+    timeout (0.3.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -254,6 +259,7 @@ DEPENDENCIES
   devise
   iex-ruby-client
   jbuilder (~> 2.7)
+  net-smtp
   pg (~> 1.1)
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
