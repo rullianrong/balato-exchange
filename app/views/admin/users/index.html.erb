@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Admin Access</h1>
+<h1>Admin Access: <%= current_user.email %></h1>
 <h2>Users</h2>
 
 <table>
@@ -16,7 +16,9 @@
       <tr>
         <td>Email: <%= user.email %></td>
         <td>Admin: <%= user.admin %></td>
-        <td>Confirmed: ADD SOMETHING FOR THIS</td>
+        <td>Confirmation Token: <%= user.confirmation_token %></td>
+        <td><%= link_to 'Show', admin_user_path(user) %></td>
+        <td><%= link_to 'Destroy', method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

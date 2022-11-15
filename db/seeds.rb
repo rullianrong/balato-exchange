@@ -8,7 +8,22 @@
 
 # Create an Admin user
 User.create!(
-    email: 'admin@test.com',
+    email: 'admin1@test.com',
     password: 'admin123',
+    confirmed_at: '2022-11-14 08:07:42.469777',
     admin: true
+)
+
+User.create!(
+    email: 'test6@test.com',
+    password: 'test123',
+    confirmed_at: '2022-11-14 08:07:42.469777',
+    admin: false
+)
+
+User.create!(
+    email: 'test7@test.com',
+    password: 'test123',
+    confirmed_at: '2022-11-14 08:07:42.469777',
+    admin: false
 )
