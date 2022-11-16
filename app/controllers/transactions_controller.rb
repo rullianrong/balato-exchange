@@ -4,22 +4,14 @@ class TransactionsController < ApplicationController
 
 # GET /transactio
   def index
-<<<<<<< HEAD
-    # @client = IEX::Api::Client.new(
-    #   publishable_token: 'pk_52521856dee54a2d8d998028f0ace4e0',
-    #   secret_token: 'sk_6ce8a46036b0455b97a811239d50c7ad',
-    #   endpoint: 'https://cloud.iexapis.com/v1'
-    # )
-    if current_user.admin?
-      redirect_to '/admin/users'
-    end
-    @transactions = Transaction.all
-=======
     @transactions = current_user.transactions.order(created_at: :desc)
->>>>>>> 3b5efb1963584e16495f09fda3d9da80fee32dd9
   end
 
   def dashboard
+    if current_user.admin?
+      redirect_to '/admin/users'
+    end
+
     @transactions = current_user.transactions
     stock_symbols = @transactions.pluck(:symbol).uniq
     @portfolio = Array.new
