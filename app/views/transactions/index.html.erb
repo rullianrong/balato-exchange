@@ -23,7 +23,7 @@
         <td><%= transaction.symbol %></td>
         <td><%= transaction.stock_name %></td>
         <td><%= transaction.shares %></td>
-        <td><%= transaction.amount %></td>
+        <td><%= number_to_currency(transaction.amount) %></td>
         <td><%= transaction.transaction_type %></td>
       </tr>
     <% end %>
