@@ -20,6 +20,7 @@
 
   <tbody>
     <% @portfolio.each do |asset| %>
+      <% next if asset[:shares] <= 0 %>
       <tr>
         <td><%= asset[:stock][:symbol] %></td>
         <td><%= asset[:stock][:stock_name] %></td>

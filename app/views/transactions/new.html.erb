@@ -32,17 +32,17 @@
   </table>
 
   <div class="field">
-    <% if @shares %>
+    <% if @shares > 0 %>
       <p>You currently own <%= @shares %> shares of <%= @company_name %></p>
       <%= form.label :shares, 'Enter number of shares' %>
-      <%= form.text_field :shares %>
+      <%= form.number_field :shares %>
       <div class="actions">
         <%= form.submit 'Buy' %>
         <%= form.submit 'Sell', name: 'sell' %>
       </div>
     <% else %>
       <%= form.label :shares, 'Enter number of shares' %>
-      <%= form.text_field :shares %>
+      <%= form.number_field :shares %>
       <div class="actions">
         <%= form.submit 'Buy' %>
       </div>
