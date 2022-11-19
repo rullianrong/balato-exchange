@@ -41,7 +41,7 @@ class TransactionsController < ApplicationController
         @symbol = quote.symbol
         @price = quote.latest_price
       rescue IEX::Errors::SymbolNotFoundError
-        # handle not found error
+        # handle symbol not found error
         redirect_to :search, alert: "Symbol not found"
       end
 
@@ -53,8 +53,15 @@ class TransactionsController < ApplicationController
 
   # POST /transactions or /transactions.json
   def create
-    if params[:sell]
-      params[:transaction][:transaction_type] = 'sell'
+    stock = current_user.transactions.find_by(symbol: params[:transaction][:symbol])
+
+    if params[:sell] 
+      params[:transaction][:transaction_type] = 'sell' 
+
+      if params[:transaction][:shares].to_i > stock.shares
+        redirect_to "/transactions/new?symbol=#{params[:transaction][:symbol]}&commit=Search", alert: 'Insufficient shares!' and return
+      end
+
     else
       params[:transaction][:transaction_type] = 'buy'
     end
@@ -64,29 +71,14 @@ class TransactionsController < ApplicationController
     @transaction = current_user.transactions.build(transaction_params)
 
     if @transaction.save
-      redirect_to :authenticated_root, notice: 'Stocks successfully added'  
+      redirect_to :authenticated_root, notice: 'Transaction successful!'
+    else
+      redirect_to "/transactions/new?symbol=#{params[:transaction][:symbol]}&commit=Search", alert: 'Invalid input!'
     end
   end
 
   # PATCH/PUT /transactions/1 or /transactions/1.json
   def update
-    @stock = current_user.transactions.find_by(symbol: params[:transaction][:symbol])
-    if params[:sell]
-      if params[:transaction][:added_shares].to_i > @stock.shares
-        redirect_to "/transactions/new?symbol=#{params[:transaction][:symbol]}&commit=Search", alert: 'Insufficient shares'
-      else
-        @stock.update_attribute(:shares, @stock.shares - params[:transaction][:added_shares].to_i)
-        if @transaction.update(transaction_params)
-          redirect_to :authenticated_root, notice: 'Stocks successfully added'
-        end
-      end
-    else 
-      @stock.update_attribute(:shares, @stock.shares + params[:transaction][:added_shares].to_i)
-      if @transaction.update(transaction_params)
-        redirect_to :authenticated_root, notice: 'Stocks successfully added'
-      end
-    end
-
   end
 
   # DELETE /transactions/1 or /transactions/1.json
