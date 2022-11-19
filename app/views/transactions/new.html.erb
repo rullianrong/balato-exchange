@@ -1,21 +1,8 @@
-<p id="alert"><%= alert %></p>
 <%= link_to 'Search', search_path %>
 
 <h1><%= @company_name %> (<%= @symbol %>)</h1>
 
 <%= form_with(model: @transaction) do |form| %>
-  <% if @transaction.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
-
-      <ul>
-        <% @transaction.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  
   <table>
     <tr>
         <td><%= form.label :symbol %></td>
@@ -32,8 +19,8 @@
   </table>
 
   <div class="field">
-    <% if @shares > 0 %>
-      <p>You currently own <%= @shares %> shares of <%= @company_name %></p>
+    <% if @current_shares > 0 %>
+      <p>You currently own <%= @current_shares %> shares of <%= @company_name %></p>
       <%= form.label :shares, 'Enter number of shares' %>
       <%= form.number_field :shares %>
       <div class="actions">
