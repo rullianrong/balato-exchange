@@ -17,6 +17,11 @@
   </head>
 
   <body>
+    <% flash.each do |type, msg| %>
+      <div class='<%= "#{type} #{type}-info" %>'>
+        <%= msg %>
+      </div>
+    <% end %>
     <div class="container page-wrapper">
       <%= render 'layouts/header' %>
       <%= yield %>

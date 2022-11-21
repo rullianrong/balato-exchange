@@ -1,9 +1,8 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Dashboard</h1>
 
 <%= link_to 'Buy stocks', search_path %>
 <%= link_to 'Transactions', transactions_path %>
+<%= link_to 'Manage Account', edit_user_registration_path %>
 
 <table>
   <thead>
@@ -18,13 +17,14 @@
 
   <tbody>
     <% @portfolio.each do |asset| %>
+      <% next if asset[:current_shares] <= 0 %>
       <tr>
-        <td><%= asset[:stock][:symbol] %></td>
-        <td><%= asset[:stock][:stock_name] %></td>
-        <td><%= asset[:shares] %></td>
-        <td><%= number_to_currency(@client.quote(asset[:stock][:symbol]).latest_price) %></td>
-        <td><%= number_to_currency(@client.quote(asset[:stock][:symbol]).latest_price * asset[:shares]) %></td>
-        <td><%= link_to 'Add/Sell stock', "/transactions/new?symbol=#{asset[:stock][:symbol]}&commit=Search" %></td>
+        <td><%= asset[:symbol] %></td>
+        <td><%= asset[:stock_name] %></td>
+        <td><%= asset[:current_shares] %></td>
+        <td><%= number_to_currency(@client.quote(asset[:symbol]).latest_price) %></td>
+        <td><%= number_to_currency(@client.quote(asset[:symbol]).latest_price * asset[:current_shares]) %></td>
+        <td><%= link_to 'Add/Sell stock', "/transactions/new?symbol=#{asset[:symbol]}&commit=Search" %></td>
       </tr>
     <% end %>
   </tbody>

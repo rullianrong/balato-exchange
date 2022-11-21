@@ -73,11 +73,18 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # IEX::Api.configure do |config|
-  #   config.publishable_token = 'pk_52521856dee54a2d8d998028f0ace4e0' # defaults to ENV['IEX_API_PUBLISHABLE_TOKEN']
-  #   config.secret_token = 'sk_6ce8a46036b0455b97a811239d50c7ad' # defaults to ENV['IEX_API_SECRET_TOKEN']
-  #   config.endpoint = 'https://cloud.iexapis.com/v1' # use 'https://sandbox.iexapis.com/v1' for Sandbox
-  # end
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: ENV['MAIL_HOST'] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name:      ENV['SENDMAIL_USERNAME'],
+    password:       ENV['SENDMAIL_PASSWORD'],
+    domain:         ENV['MAIL_HOST'],
+    address:       'smtp.gmail.com',
+    port:          '587',
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 end
