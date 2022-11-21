@@ -17,8 +17,8 @@
         <td>Email: <%= user.email %></td>
         <td>Admin: <%= user.admin %></td>
         <td>Confirmation Token: <%= user.confirmation_token %></td>
+        <td>Confirmation at: <%= user.confirmed_at %></td>
         <td><%= link_to 'Show', admin_user_path(user) %></td>
-        
       </tr>
     <% end %>
   </tbody>
