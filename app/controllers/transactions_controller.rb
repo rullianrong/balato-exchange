@@ -95,6 +95,7 @@ class TransactionsController < ApplicationController
   # end
 
   private
+    #initialize IEX client
     def set_client
       @client = IEX::Api::Client.new
     end
