@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-    before_action :set_user, only: %i[ show edit update destroy ]
+    before_action :set_user, only: %i[ show edit update destroy confirm_user]
     before_action :check_if_admin
 
   # GET /users or /users.json
@@ -57,6 +57,20 @@ class Admin::UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to admin_users_path, notice: "User was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def pending_signup
+    @pending_users = User.where(confirmed_at: nil)
+  end
+
+  def confirm_user
+    @pending_users = User.where(confirmed_at: nil)
+
+    if @user.update(confirmed_at: DateTime.current, confirmation_token: "admin")
+      redirect_to admin_user_pending_signup_path, notice: "Successfully confirmed user"
+    else
+      render :pending_signup
     end
   end
 
