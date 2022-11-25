@@ -8,16 +8,16 @@ class TransactionsController < ApplicationController
   end
 
   # def dashboard
-  #   if current_user.admin?
-  #     redirect_to '/admin/users'
-  #   end
-
-  #   stock_symbols = @transactions.pluck(:symbol).uniq
-  #   @transactions = current_user.transactions
+  #     stock_symbols = @transactions.pluck(:symbol).uniq
+  #     @transactions = current_user.transactions
   #     .order(created_at: :desc)
   # end
 
   def dashboard
+    if current_user.admin?
+      redirect_to '/admin/users'
+    end
+
     @portfolio = Array.new
     transactions = current_user.transactions
     # iterate through the symbols column, returning a unique array of symbols

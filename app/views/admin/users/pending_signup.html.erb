@@ -1,0 +1,9 @@
+<div>Pending Signup Page</div>
+
+
+<% @pending_users.each do |user| %>
+    <div>
+        <%= user.email %>
+        <%= link_to 'Confirm', admin_path(user), method: :patch %>
+    </div>
+<% end %> 

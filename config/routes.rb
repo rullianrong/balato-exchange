@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    get "/user_pending_signup", to: "users#pending_signup"
+    patch "/user_pending_signup/:id", to: "users#confirm_user"
     resources :users do
       resources :transactions
     end

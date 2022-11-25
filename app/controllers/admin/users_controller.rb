@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-    before_action :set_user, only: %i[ show edit update destroy ]
+    before_action :set_user, only: %i[ show edit update destroy confirm_user]
     before_action :check_if_admin
 
   # GET /users or /users.json
@@ -60,11 +60,31 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def pending_signup
+    @pending_users = User.where(confirmed_at: nil)
+  end
+
+  def confirm_user
+    @pending_users = User.where(confirmed_at: nil)
+
+    if @user.update(confirmed_at: DateTime.current)
+      AdminConfirmationMailer.confirmed(@user).deliver_now
+      redirect_to admin_user_pending_signup_path, notice: "Successfully confirmed user"
+    else
+      render :pending_signup
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
+
+    # For confirmation after admin confirmed
+    # def user_confirmation_email
+    #   AdminConfirmationMailer.confirmed(self).deliver_now
+    # end
 
     # Only allow a list of trusted parameters through.
     def user_params
