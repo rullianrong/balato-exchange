@@ -3,6 +3,7 @@ FactoryBot.define do
     email {'test@gmail.com'}
     password { 'password123' }
     confirmed_at { 1.day.ago }
+    
     trait :admin do
       admin { true }
     end

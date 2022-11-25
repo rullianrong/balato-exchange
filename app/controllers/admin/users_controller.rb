@@ -67,7 +67,8 @@ class Admin::UsersController < ApplicationController
   def confirm_user
     @pending_users = User.where(confirmed_at: nil)
 
-    if @user.update(confirmed_at: DateTime.current, confirmation_token: "admin")
+    if @user.update(confirmed_at: DateTime.current)
+      AdminConfirmationMailer.confirmed(@user).deliver_now
       redirect_to admin_user_pending_signup_path, notice: "Successfully confirmed user"
     else
       render :pending_signup
@@ -79,6 +80,11 @@ class Admin::UsersController < ApplicationController
     def set_user
       @user = User.find(params[:id])
     end
+
+    # For confirmation after admin confirmed
+    # def user_confirmation_email
+    #   AdminConfirmationMailer.confirmed(self).deliver_now
+    # end
 
     # Only allow a list of trusted parameters through.
     def user_params
