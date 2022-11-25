@@ -1,27 +1,35 @@
-<nav class="navbar navbar-expand-lg navbar">
-  <div class="container-fluid">
-    <%# For showing admin / trader upon login %>
-    <% if current_user && current_user.admin %>
-        <span>Admin</span>
-    <% elsif current_user && !current_user.admin %>
-        <span>Trader</span>
+<nav class="navbar navbar-expand-lg navbar justify-content-between">
+    <span class="navbar-brand">Balato Exchange</span>
+    <% if current_user && !current_user.admin %>
+        <div>
+            <%= link_to 'Dashboard', authenticated_root_path, class: "header-nav" %>
+            <%= link_to 'Transactions', transactions_path, class: "header-nav" %>
+            <%= link_to 'Manage Account', edit_user_registration_path, class: "header-nav" %>
+        </div>
     <% end %>
-
-    <div class="collapse navbar-collapse navbar-content-container" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-content-right">
+  <div>
+    <div class="navbar-content-container" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row gap-2 align-items-center">
+        <%# For showing admin / trader upon login %>
+        <% if current_user && current_user.admin %>
+            <li class="nav-item">
+                <span class="greet-user">Welcome, Admin <%= current_user.email.split("@").first.capitalize %></span>
+            </li>
+        <% elsif current_user && !current_user.admin %>
+            <li class="nav-item">
+                <span class="greet-user">Welcome, Trader <%= current_user.email.split("@").first.capitalize %></span>
+            </li>
+        <% end %>
         <% if user_signed_in? %>
             <li class="nav-item">
-                <%= link_to current_user.email, edit_user_registration_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-                <%= link_to 'Log out', destroy_user_session_path, method: :delete, class: "nav-link" %>
+                <%= link_to 'Log out', destroy_user_session_path, method: :delete, class: "nav-link logout-btn" %>
             </li>
         <% else %>
             <li class="nav-item">
-                <%= link_to 'Sign up', new_user_registration_path, class: "nav-link" %>
+                <%= link_to 'Log in', new_user_session_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
-                <%= link_to 'Log in', new_user_session_path, class: "nav-link" %>
+                <%= link_to 'Sign up', new_user_registration_path, class: "nav-link" %>
             </li>
         <% end %>
       </ul>

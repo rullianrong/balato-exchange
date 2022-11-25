@@ -13,3 +13,212 @@
  *= require_tree .
  *= require_self
  */
+
+ :root {
+    --primary: #6783dd;
+    --primary-light: #d4dffe;
+    --primary-faded: #f6f9fe;
+    --light: #ffffff;
+ }
+
+ body {
+    font-family: 'Ubuntu', sans-serif;
+ }
+
+ p {
+    padding: 3px;
+ }
+
+ a {
+    text-decoration: none;
+    color: var(--primary);
+    padding: 3px;
+    padding-bottom: 0;
+    border-radius: 3px;
+    font-size: .8rem;
+ }
+
+ a:hover {
+    background-color: var(--primary-faded);
+    color: #6783dd;
+ }
+
+ a:visited {
+    color: var(--primary);
+ }
+
+ .alert, .notice, #error_explanation {
+    color: var(--primary);
+    width: 50%;
+    height: 30px;
+    margin: 10px auto;
+    background-color: var(--primary-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+ .alert {
+    color: rgba(255, 0, 0, .5);
+ }
+
+#error_explanation {
+    height: 50px;
+    border: none;
+    border-radius: 0.375rem
+}
+
+#error_explanation > ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#error_explanation > ul > li {
+    list-style-type: none;
+    color: rgba(255, 0, 0, .5);
+}
+
+.field_with_errors {
+    background-color: var(--primary);
+}
+
+ .bg-container {
+    width: 60%;
+ }
+
+ .bg-image {
+    width: 100%;
+ }
+
+ .navbar {
+    background-color: var(--primary);
+    padding: 10px;
+ }
+
+ .header-nav, .header-nav:visited {
+   color: var(--light);
+ }
+
+ .header-nav:hover {
+   background-color: var(--primary);
+ }
+
+ .navbar-brand {
+    font-weight: 700;
+    color: var(--light);
+ }
+
+ .navbar-brand:hover {
+    color: var(--light);
+ }
+
+ .nav-link:hover {
+    background-color: var(--primary);
+    color: var(--light);
+ }
+
+ .nav-link:visited {
+    background-color: var(--primary);
+    color: var(--light);
+ }
+
+ .greet-user {
+    color: var(--light);
+ }
+
+ .form {
+   border: 1px solid var(--primary-light);
+   border-radius: 5px;
+   padding: 10px;
+   background-color: var(--primary-faded);
+ }
+
+ .form-control {
+   color: var(--primary);
+ }
+
+ .form-control:focus {
+   color: var(--primary);
+ }
+
+ .form-header {
+    text-align: center; 
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--primary);
+ }
+
+ .form-group {
+    margin-bottom: 10px;
+ }
+
+ .btn-primary {
+    background-color: var(--primary);
+ }
+
+ .table {
+   width: 80%;
+   border-radius: 3px;
+   margin: 0 auto;
+   background-color: var(--primary-faded);
+ }
+
+
+ th, td {
+   text-align: center;
+ }
+
+ thead {
+   font-weight: 700;
+   background-color: var(--primary-light);
+   color: var(--primary);
+ }
+
+ .action-btn {
+   color: var(--light);
+   padding: 5px;
+   background-color: var(--primary);
+ }
+
+ .action-btn:visited {
+   color: var(--light);
+ }
+
+ .action-btn:hover {
+   background-color: var(--light);
+   color: var(--primary);
+ }
+
+ .logout-btn {
+   background-color: var(--primary-light);
+   color: var(--primary);
+ }
+
+ .logout-btn:visited {
+   background-color: var(--primary-light);
+   color: var(--primary);
+ }
+
+ .logout-btn:hover {
+   background-color: var(--primary-faded);
+   color: var(--primary);
+ }
+
+ .dashboard {
+   width: 80%;
+   margin: 20px auto;
+   color: var(--primary);
+ }
+
+ .dashboard h1 {
+   font-size: 1.3rem;
+ }
+
+ .quote {
+   border: 1px solid var(--primary-light);
+   padding: 10px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }

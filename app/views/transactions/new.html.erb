@@ -1,39 +1,42 @@
-<%= link_to 'Search', search_path %>
+<div class="d-flex justify-content-center mt-3">
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <h2 class="form-header"><%= @company_name %> (<%= @symbol %>)</h2>
+      <%= form_with(model: @transaction) do |form| %>
+        <table class="quote">
+          <tr>
+              <td><%= form.label :symbol %></td>
+              <td><%= form.text_field :symbol, value: @symbol, :readonly => true  %></td>
+          </tr>
+          <tr>
+              <td><%= form.label :company_name %></td>
+              <td><%= form.text_field :stock_name, value: @company_name, :readonly => true  %>
+          </tr>
+          <tr>
+              <td>Price</td>
+              <td>$ <%= @price %></td>
+          </tr>
+        </table>
 
-<h1><%= @company_name %> (<%= @symbol %>)</h1>
+        <div class="form-group d-flex flex-column gap-1">
+          <% if @current_shares > 0 %>
+            <p class="form-text text-muted mb-2">You currently own <%= @current_shares %> shares of <%= @company_name %></p>
+            <%= form.label :shares, 'Enter number of shares:' %>
+            <%= form.number_field :shares, class: "form-control" %>
+            <div class="actions d-flex justify-content-center gap-2">
+              <%= form.submit 'Buy', class: "btn btn-primary", style: "background-color: green; border: none" %>
+              <%= form.submit 'Sell', name: 'sell', class: "btn btn-primary", style: "background-color: red; border: none" %>
+            </div>
+          <% else %>
+            <%= form.label :shares, 'Enter number of shares:' %>
+            <%= form.number_field :shares, class: "form-control" %>
+            <div class="actions d-flex justify-content-center">
+              <%= form.submit 'Buy', class: "btn btn-primary", style: "background-color: green; border: none" %>
+            </div>
+          <% end %>
+        </div>
 
-<%= form_with(model: @transaction) do |form| %>
-  <table>
-    <tr>
-        <td><%= form.label :symbol %></td>
-        <td><%= form.text_field :symbol, value: @symbol, :readonly => true  %></td>
-    </tr>
-    <tr>
-        <td><%= form.label :company_name %></td>
-        <td><%= form.text_field :stock_name, value: @company_name, :readonly => true  %>
-    </tr>
-    <tr>
-        <td>Price</td>
-        <td><%= @price %></td>
-    </tr>
-  </table>
-
-  <div class="field">
-    <% if @current_shares > 0 %>
-      <p>You currently own <%= @current_shares %> shares of <%= @company_name %></p>
-      <%= form.label :shares, 'Enter number of shares' %>
-      <%= form.number_field :shares %>
-      <div class="actions">
-        <%= form.submit 'Buy' %>
-        <%= form.submit 'Sell', name: 'sell' %>
-      </div>
-    <% else %>
-      <%= form.label :shares, 'Enter number of shares' %>
-      <%= form.number_field :shares %>
-      <div class="actions">
-        <%= form.submit 'Buy' %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-
-<% end %>
+</div>

@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-center mt-3">
+  <div class="bg-container">
+    <%= image_tag 'balato-exchange-bg.jpg', class: 'bg-image' %>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center form">
+    <div>
+      <h2 class="form-header">Login</h2>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter Email", class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="form-check">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <%= f.label :remember_me, class: "form-text text-muted" %>
+          </div>
+        <% end %>
+
+        <div class="actions">
+          <%= f.submit "Log in", class: "btn btn-primary" %>
+        </div>
+      <% end %> 
+
+      <%= render "users/shared/links" %>
+    </div>
+  </div>
+</div>
