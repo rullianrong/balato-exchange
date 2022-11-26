@@ -1,5 +1,5 @@
 <div class="d-flex dashboard">
-  <h1 class="mb-2">Email: <%= @user.email %></h1>
+  <h1 class="mb-2">Email: <%= @user.email %><%= link_to "(Edit)", edit_admin_user_path(@user) %></h1>
 </div>
   <table class="table">
     <thead class="thead-dark">

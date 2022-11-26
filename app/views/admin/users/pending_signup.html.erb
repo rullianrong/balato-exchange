@@ -12,9 +12,11 @@
       <% @pending_users.each do |user| %>
         <tr>
             <td class="mb-1 d-flex" style="color: var(--primary)"><%= user.email %></td>
+            <% # Update user attribute confirmation_at: DateTime.current %>
             <td><%= link_to 'Confirm', admin_path(user), method: :patch, style: 'color: green' %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
+

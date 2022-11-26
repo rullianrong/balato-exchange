@@ -6,7 +6,7 @@
     <thead class="thead-dark">
       <tr>
         <th scope="col">Users</th>
-        <th scope="col">Confirmed?</th>
+        <th scope="col">Confirmed?: <span style="color: red"><%= @pending_users.length %></span></th>
       </tr>
     </thead>
 
@@ -23,5 +23,4 @@
       <% end %>
     </tbody>
   </table>
-
 </div>

@@ -1,6 +1,7 @@
 class TransactionsController < ApplicationController
   # before_action :set_transaction, only: %i[ show edit update destroy ]
   before_action :set_client, only: %i[ dashboard new create ]
+  before_action :check_if_admin
 
 # GET /transactions
   def index
@@ -14,9 +15,6 @@ class TransactionsController < ApplicationController
   # end
 
   def dashboard
-    if current_user.admin?
-      redirect_to '/admin/users'
-    end
 
     @portfolio = Array.new
     transactions = current_user.transactions
@@ -124,5 +122,11 @@ class TransactionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def transaction_params
       params.require(:transaction).permit(:symbol, :stock_name, :shares, :transaction_type, :amount, :user_id)
+    end
+
+    def check_if_admin
+      if current_user.admin?
+        redirect_to '/admin/users'
+      end
     end
 end

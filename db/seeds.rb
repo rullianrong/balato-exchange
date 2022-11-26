@@ -8,29 +8,29 @@
 
 # Create an Admin user
 User.create!(
-    email: 'adminx@test.com',
+    email: 'admin@test.com',
     password: 'admin123',
-    confirmed_at: '2022-11-14 08:07:42.469777',
+    confirmed_at: DateTime.current,
     admin: true
 )
 
 User.create!(
-    email: 'adminy@test.com',
+    email: 'admin2@test.com',
     password: 'admin123',
-    confirmed_at: '2022-11-14 08:07:42.469777',
+    confirmed_at: DateTime.current,
     admin: true
 )
 
 User.create!(
     email: 'testx@test.com',
     password: 'test123',
-    confirmed_at: '2022-11-14 08:07:42.469777',
+    confirmed_at: DateTime.current,
     admin: false
 )
 
 User.create!(
     email: 'testy@test.com',
     password: 'test123',
-    confirmed_at: '2022-11-14 08:07:42.469777',
+    confirmed_at: DateTime.current,
     admin: false
 )
