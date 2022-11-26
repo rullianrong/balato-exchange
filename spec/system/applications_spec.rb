@@ -9,8 +9,8 @@ RSpec.describe "Applications", type: :system do
     visit new_user_session_path
     authorized_user = create(:user)
     # filled with authorized credentials
-    fill_in "Email", :with => authorized_user.email
-    fill_in "Password", :with => authorized_user.password
+    fill_in 'user_email', :with => authorized_user.email
+    fill_in 'user_password', :with => authorized_user.password
     click_button "Log in"
 
     authorized_user
@@ -20,9 +20,9 @@ RSpec.describe "Applications", type: :system do
     user = build(:user)
 
     visit new_user_registration_path
-    fill_in "Email", :with => user.email
-    fill_in "Password", :with => user.password
-    fill_in "Password confirmation", :with => user.password
+    fill_in 'user_email', :with => user.email
+    fill_in 'user_password', :with => user.password
+    fill_in 'user_password_confirmation', :with => user.password
     click_button "Sign up"
 
     expect(current_path).to eq(unauthenticated_root_path)
@@ -32,8 +32,8 @@ RSpec.describe "Applications", type: :system do
   it "will not allow unauthorized user" do
 
     visit new_user_session_path
-    fill_in "Email", :with => "unauthorized@email.com"
-    fill_in "Password", :with => "unauthorizedPassword"
+    fill_in 'user_email', :with => "unauthorized@email.com"
+    fill_in 'user_password', :with => "unauthorizedPassword"
     click_button "Log in"
 
     expect(current_path).to eq(new_user_session_path)
@@ -50,12 +50,8 @@ RSpec.describe "Applications", type: :system do
   it "searchs Microsoft stocks and buy some shares" do
     login_user()
 
-    click_link "Buy stocks"
-
-    expect(current_path).to eq("/search")
-
-    fill_in "Symbol", :with => "MSFT"
-    click_button "Search"
+    fill_in "symbol", :with => "MSFT"
+    click_button "Search Stock"
 
     expect(page).to have_text("Microsoft Corporation (MSFT)")
 
@@ -78,9 +74,9 @@ RSpec.describe "Applications", type: :system do
 
     click_link "Manage Account"
 
-    fill_in 'Password', :with => 'newPassword'
-    fill_in 'Password confirmation', :with => 'newPassword'
-    fill_in 'Current password', :with =>  user.password
+    fill_in 'user_password', :with => 'newPassword'
+    fill_in 'user_password_confirmation', :with => 'newPassword'
+    fill_in 'user_current_password', :with =>  user.password
 
     click_button 'Update'
   end
