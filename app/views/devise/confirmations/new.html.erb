@@ -1,0 +1,24 @@
+<% if resource.errors.any? %>
+  <div id="error_explanation">
+    <ul>
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="d-flex justify-content-center align-items-center mt-3">
+  <div>
+    <h2 class="form-header">Didn't receive confirmation instructions?</h2>
+    <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+      <div class="form-group">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter Email", class: "form-control", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Resend confirmation instructions", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    </div>
+</div>

@@ -1,17 +1,29 @@
-<h1>Dashboard</h1>
 
-<%= link_to 'Buy stocks', search_path %>
-<%= link_to 'Transactions', transactions_path %>
-<%= link_to 'Manage Account', edit_user_registration_path %>
+<div class="d-flex flex-column dashboard">
+  <h1 class="mb-2">Portfolio</h1>
+  <div>
+    <%= form_with url: new_transaction_path, method: :get do |form| %>
+      <div class="d-flex gap-1 align-items-center">
+        <div class="col-auto">
+          <%= form.text_field :symbol, placeholder: "ex. MSFT, AAPL, GOOGL", class: "form-control"%>
+        </div>
+        <div class="col-auto">
+          <%= form.submit 'Search Stock', class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
 
-<table>
-  <thead>
+<table class="table">
+  <thead class="thead-dark">
     <tr>
-      <th>Symbol</th>
-      <th>Stock name</th>
-      <th>Shares</th>
-      <th>Price</th>
-      <th>Value</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">Stock name</th>
+      <th scope="col">Shares</th>
+      <th scope="col">Price</th>
+      <th scope="col">Value</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
 
@@ -24,12 +36,9 @@
         <td><%= asset[:current_shares] %></td>
         <td><%= number_to_currency(@client.quote(asset[:symbol]).latest_price) %></td>
         <td><%= number_to_currency(@client.quote(asset[:symbol]).latest_price * asset[:current_shares]) %></td>
-        <td><%= link_to 'Add/Sell stock', "/transactions/new?symbol=#{asset[:symbol]}&commit=Search" %></td>
+        <td><%= link_to 'Add/Sell', "/transactions/new?symbol=#{asset[:symbol]}&commit=Search", class: "action-btn" %></td>
       </tr>
     <% end %>
   </tbody>
-
 </table>
-
-<br>
 

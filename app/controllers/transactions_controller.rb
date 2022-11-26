@@ -48,7 +48,7 @@ class TransactionsController < ApplicationController
       @price = quote.latest_price
     rescue IEX::Errors::SymbolNotFoundError
       # handle symbol not found error
-      redirect_to :search, alert: "Symbol not found"
+      redirect_to :authenticated_root, alert: "Symbol not found"
     end
 
     @transaction = current_user.transactions.build
