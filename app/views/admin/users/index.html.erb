@@ -1,27 +1,29 @@
-<p id="notice"><%= notice %></p>
+<div class="d-flex flex-column dashboard">
 
-<h1>Admin Access: <%= current_user.email %></h1>
-<h2>Users</h2>
+  <h1 class="mb-2">Admin Access: <%= current_user.email %></h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
+  <table class="table">
+    <thead class="thead-dark">
       <tr>
-        <td>Email: <%= user.email %></td>
-        <td><%= link_to 'Show', admin_user_path(user) %></td>
+        <th scope="col">Users</th>
+        <th scope="col">Confirmed?</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td class="mb-1 d-flex"><%= link_to user.email, admin_user_path(user) %></td>
+          <% if user.confirmed_at? %>
+            <td style="color: green">approved</td>
+          <% else %>
+            <td style="color: red">pending</td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<%= link_to 'Pending Signup', admin_user_pending_signup_path %>:<%= @pending_users.length %>
-<%= link_to 'Add User', new_admin_user_path %>
+<%=# link_to 'Pending Signup', admin_user_pending_signup_path %><%=# @pending_users.length %>
+<%=# link_to 'Add User', new_admin_user_path %>
+</div>
