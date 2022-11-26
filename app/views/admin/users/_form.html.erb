@@ -1,23 +1,17 @@
 <%= form_with(model: [:admin, user], local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-        <% user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+  <div class="form-group">
+    <%= form.text_field :email, class: "form-control", placeholder: "Email" %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "form-control" %>
+      <% if @minimum_password_length %>
+    <em class="form-text text-muted">(Password must be <%= @minimum_password_length %> characters minimum)</em>
+    <% end %>
+  </div>
+
+  <div class="actions d-flex justify-content-center">
+    <%= form.submit 'Add User', class: "btn btn-primary" %>
   </div>
   
 <% end %>

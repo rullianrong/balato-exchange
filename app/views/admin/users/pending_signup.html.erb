@@ -1,9 +1,20 @@
-<div>Pending Signup Page</div>
+<div class="d-flex flex-column dashboard">
+    <h1 class="mb-2">Pending Users</h1>
+    <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
 
-
-<% @pending_users.each do |user| %>
-    <div>
-        <%= user.email %>
-        <%= link_to 'Confirm', admin_path(user), method: :patch %>
-    </div>
-<% end %> 
+    <tbody>
+      <% @pending_users.each do |user| %>
+        <tr>
+            <td class="mb-1 d-flex" style="color: var(--primary)"><%= user.email %></td>
+            <td><%= link_to 'Confirm', admin_path(user), method: :patch, style: 'color: green' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
