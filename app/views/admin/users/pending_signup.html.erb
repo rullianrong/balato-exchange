@@ -4,6 +4,7 @@
 <% @pending_users.each do |user| %>
     <div>
         <%= user.email %>
+        <% # Update user attribute confirmation_at: DateTime.current %>
         <%= link_to 'Confirm', admin_path(user), method: :patch %>
     </div>
 <% end %> 

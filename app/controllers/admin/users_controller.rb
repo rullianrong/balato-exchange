@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
     before_action :set_user, only: %i[ show edit update destroy confirm_user]
+    before_action :set_pending_users, only: %i[ index pending_signup confirm_user ]
     before_action :check_if_admin
 
   # GET /users or /users.json
@@ -60,13 +61,12 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  # GET pending users
   def pending_signup
-    @pending_users = User.where(confirmed_at: nil)
   end
 
+  # PATCH pending user confirmations
   def confirm_user
-    @pending_users = User.where(confirmed_at: nil)
-
     if @user.update(confirmed_at: DateTime.current)
       AdminConfirmationMailer.confirmed(@user).deliver_now
       redirect_to admin_user_pending_signup_path, notice: "Successfully confirmed user"
@@ -79,6 +79,10 @@ class Admin::UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def set_pending_users
+      @pending_users = User.where(confirmed_at: nil)
     end
 
     # For confirmation after admin confirmed
